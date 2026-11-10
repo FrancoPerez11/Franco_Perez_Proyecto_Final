@@ -1,0 +1,109 @@
+* { box-sizing: border-box; }
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    background: #faf6f0;
+    color: #2b2b2b;
+}
+
+.barra {
+    background: #7a1f1f;
+    padding: 12px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.barra a { color: #fff; text-decoration: none; margin-right: 14px; }
+.barra a:hover { text-decoration: underline; }
+.logo { font-weight: bold; font-size: 1.2rem; }
+
+.contenedor {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 16px;
+}
+
+h1, h2 { color: #7a1f1f; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    margin: 12px 0;
+}
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background: #f0e4d4; }
+
+.formulario {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 480px;
+    border: 1px solid #ddd;
+}
+.formulario label { display: block; margin-top: 12px; font-weight: bold; }
+.formulario input, .formulario select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+}
+.formulario button { margin-top: 16px; }
+
+button, .boton {
+    background: #7a1f1f;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.95rem;
+}
+button:hover, .boton:hover { background: #5a1414; }
+.boton-peligro { background: #b00020; }
+
+.en-linea { display: inline; }
+.cantidad { width: 70px; padding: 6px; }
+.total { font-size: 1.2rem; font-weight: bold; }
+
+.buscador { margin: 12px 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.buscador input[type="search"] { padding: 8px; width: 280px; max-width: 100%; }
+
+.aviso { padding: 10px 14px; border-radius: 4px; }
+.aviso-ok { background: #dff3df; border: 1px solid #8cc58c; }
+.aviso-error { background: #fbe0e0; border: 1px solid #d98a8a; }
+
+.errores {
+    background: #fbe0e0;
+    border: 1px solid #d98a8a;
+    padding: 10px 10px 10px 30px;
+    border-radius: 4px;
+}
+
+.tarjeta {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+}
+
+.estado {
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+    color: #fff;
+    background: #888;
+}
+.estado-pendiente { background: #d98a00; }
+.estado-entregado { background: #2e7d32; }
+.estado-cancelado { background: #b00020; }
+
+.pie { text-align: center; padding: 20px; color: #777; font-size: 0.85rem; }
