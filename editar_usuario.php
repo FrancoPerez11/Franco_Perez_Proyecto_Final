@@ -57,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errores)) {
         try {
-            // Que no choque con otro usuario (ignoramos al mismo usuario)
             $stmt = $conexion->prepare('SELECT dni, email FROM usuarios
                 WHERE (dni = :dni OR email = :email) AND id <> :id');
             $stmt->execute(['dni' => $dni, 'email' => $email, 'id' => $id]);

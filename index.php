@@ -59,7 +59,7 @@ abrirPagina('Iniciar sesión');
     </ul>
 <?php endif; ?>
 
-<form action="login.php" method="POST" class="formulario">
+<form action="index.php" method="POST" class="formulario">
     <label for="email">Correo electrónico:</label>
     <input type="email" id="email" name="email" maxlength="254" value="<?= escapar($email) ?>" required>
 

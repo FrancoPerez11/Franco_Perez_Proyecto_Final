@@ -20,7 +20,6 @@ if ($id === false || $id === null || $id < 1) {
     exit('Identificador inválido.');
 }
 
-// Un admin no se puede archivar a sí mismo
 if ($id === (int)$admin['id']) {
     guardarMensaje('error', 'No podés archivar tu propia cuenta.');
     header('Location: admin_usuarios.php');

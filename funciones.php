@@ -1,5 +1,4 @@
 <?php
-// Funciones que usan casi todas las páginas
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -8,7 +7,6 @@ function escapar(string $valor): string {
     return htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
 }
 
-// ---------- CSRF ----------
 function generarTokenCsrf(): string {
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -22,7 +20,6 @@ function validarTokenCsrf($token): bool {
         && hash_equals($_SESSION['csrf_token'], $token);
 }
 
-// ---------- Mensajes que se muestran una sola vez ----------
 function guardarMensaje(string $tipo, string $texto): void {
     $_SESSION['mensaje'] = ['tipo' => $tipo, 'texto' => $texto];
 }
@@ -36,11 +33,9 @@ function obtenerMensaje(): ?array {
     return $mensaje;
 }
 
-// ---------- Control de acceso ----------
-// Devuelve los datos del usuario logueado (los lee de la base, no de la sesión)
 function requerirLogin(PDO $conexion): array {
     if (!isset($_SESSION['usuario_id'])) {
-        header('Location: login.php');
+        header('Location: index.php');
         exit;
     }
 
@@ -55,11 +50,10 @@ function requerirLogin(PDO $conexion): array {
         exit('No se pudo verificar la sesión.');
     }
 
-    // si lo archivaron mientras tenía la sesión abierta, lo sacamos
     if ($usuario === false) {
         session_unset();
         session_destroy();
-        header('Location: login.php');
+        header('Location: index.php');
         exit;
     }
 
@@ -76,7 +70,6 @@ function requerirAdmin(PDO $conexion): array {
     return $usuario;
 }
 
-// ---------- Dirección de entrega ----------
 function obtenerDireccion(PDO $conexion, int $usuarioId) {
     $stmt = $conexion->prepare('SELECT calle, numero, piso, ciudad, referencia
         FROM direcciones WHERE usuario_id = :usuario_id LIMIT 1');
@@ -84,7 +77,6 @@ function obtenerDireccion(PDO $conexion, int $usuarioId) {
     return $stmt->fetch();
 }
 
-// Arma el texto de la dirección que se guarda en cada pedido
 function textoDireccion(array $d): string {
     $texto = $d['calle'] . ' ' . $d['numero'];
     if (!empty($d['piso'])) {
@@ -97,7 +89,6 @@ function textoDireccion(array $d): string {
     return $texto;
 }
 
-// ---------- Parte de arriba de cada página (menú + mensajes) ----------
 function abrirPagina(string $titulo): void {
     $mensaje = obtenerMensaje();
     $logueado = isset($_SESSION['usuario_id']);
@@ -124,7 +115,7 @@ function abrirPagina(string $titulo): void {
             <?php endif; ?>
             <a href="cerrar_sesion.php">Cerrar sesión</a>
         <?php else: ?>
-            <a href="login.php">Iniciar sesión</a>
+            <a href="index.php">Iniciar sesión</a>
             <a href="registro.php">Crear cuenta</a>
         <?php endif; ?>
     </nav>
@@ -138,12 +129,11 @@ function abrirPagina(string $titulo): void {
 <?php
 }
 
-// ---------- Parte de abajo de cada página ----------
 function cerrarPagina(): void {
     ?>
 </main>
 <footer class="pie">
-    Restaurante La Casona · Trabajo práctico 4.º año
+    Restaurante La Casona Franco Perez
 </footer>
 </body>
 </html>

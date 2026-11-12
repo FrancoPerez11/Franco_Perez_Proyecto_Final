@@ -46,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errores)) {
         try {
-            // Chequeo de duplicados
             $stmt = $conexion->prepare('SELECT dni, email FROM usuarios WHERE dni = :dni OR email = :email');
             $stmt->execute(['dni' => $dni, 'email' => $email]);
             foreach ($stmt->fetchAll() as $fila) {
@@ -70,11 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'dni' => $dni,
                     'email' => $email,
                     'password_hash' => $passwordHash,
-                    'rol' => 'usuario'   // siempre usuario, el rol se define en el servidor
+                    'rol' => 'usuario'
                 ]);
 
                 guardarMensaje('ok', 'Cuenta creada correctamente. Ya podés iniciar sesión.');
-                header('Location: login.php');
+                header('Location: index.php');
                 exit;
             }
         } catch (PDOException $e) {
@@ -123,5 +122,5 @@ abrirPagina('Crear cuenta');
 
     <button type="submit">Crear cuenta</button>
 </form>
-<p>¿Ya tenés cuenta? <a href="login.php">Iniciá sesión</a></p>
+<p>¿Ya tenés cuenta? <a href="index.php">Iniciá sesión</a></p>
 <?php cerrarPagina(); ?>

@@ -12,7 +12,6 @@ $email = '';
 $rol = 'usuario';
 $rolesPermitidos = ['usuario', 'admin'];
 
-// ---------- Registrar un usuario nuevo ----------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!validarTokenCsrf($_POST['csrf_token'] ?? null)) {
         $errores[] = 'La solicitud no es válida. Recargá la página e intentá de nuevo.';
@@ -84,7 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ---------- Listado con búsqueda ----------
 $buscar = trim($_GET['buscar'] ?? '');
 
 try {

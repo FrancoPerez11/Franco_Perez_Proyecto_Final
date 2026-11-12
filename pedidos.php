@@ -5,7 +5,6 @@ require_once __DIR__ . '/funciones.php';
 $usuario = requerirLogin($conexion);
 $errores = [];
 
-// ---------- Cancelar un pedido ----------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'cancelar') {
     if (!validarTokenCsrf($_POST['csrf_token'] ?? null)) {
         http_response_code(403);
@@ -19,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'cance
     }
 
     try {
-        // Solo se cancela un pedido propio y que siga pendiente
         $stmt = $conexion->prepare("UPDATE pedidos
             SET estado = 'cancelado'
             WHERE id = :id AND usuario_id = :usuario_id AND estado = 'pendiente'");
@@ -39,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'cance
     exit;
 }
 
-// ---------- Dirección (sin dirección no se puede pedir) ----------
 try {
     $direccion = obtenerDireccion($conexion, (int)$usuario['id']);
 } catch (PDOException $e) {
@@ -54,7 +51,6 @@ if ($direccion === false) {
     exit;
 }
 
-// ---------- ¿Estamos modificando un pedido existente? ----------
 $editandoId = 0;
 $idParam = $_GET['id'] ?? $_POST['id'] ?? '';
 
@@ -81,7 +77,6 @@ if ($idParam !== '') {
     }
 }
 
-// Cantidades que se muestran en el formulario: [plato_id => cantidad]
 $actuales = [];
 if ($editandoId > 0) {
     try {
@@ -95,7 +90,6 @@ if ($editandoId > 0) {
     }
 }
 
-// ---------- Guardar (pedido nuevo o modificado) ----------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'guardar') {
     if (!validarTokenCsrf($_POST['csrf_token'] ?? null)) {
         $errores[] = 'La solicitud no es válida. Recargá la página e intentá de nuevo.';
@@ -129,7 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'guard
 
     if (empty($errores)) {
         try {
-            // El precio se toma de la base de datos, nunca del formulario
             $ids = array_keys($elegidos);
             $marcadores = implode(',', array_fill(0, count($ids), '?'));
             $stmt = $conexion->prepare("SELECT id, precio FROM platos WHERE disponible = 1 AND id IN ($marcadores)");
@@ -144,7 +137,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'guard
                     $total += $plato['precio'] * $elegidos[(int)$plato['id']];
                 }
 
-                // Pedido e items se guardan juntos (si algo falla, no se guarda nada)
                 $conexion->beginTransaction();
 
                 if ($editandoId > 0) {
@@ -204,7 +196,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'guard
     }
 }
 
-// ---------- Datos para mostrar ----------
 try {
     $consulta = $conexion->query('SELECT id, nombre, descripcion, precio FROM platos WHERE disponible = 1 ORDER BY id');
     $platos = $consulta->fetchAll();
@@ -225,7 +216,6 @@ try {
     exit('No se pudo cargar la información de los pedidos.');
 }
 
-// Agrupamos las filas por pedido
 $pedidos = [];
 foreach ($filas as $fila) {
     $id = $fila['id'];
@@ -307,7 +297,6 @@ abrirPagina('Pedidos');
     </form>
 
     <script>
-        // Solo muestra el total mientras elegís. El total real lo calcula el servidor.
         var campos = document.querySelectorAll('.cantidad');
         var totalSpan = document.getElementById('total');
 

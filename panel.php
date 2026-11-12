@@ -66,11 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ];
 
             if ($direccion === false) {
-                // primera vez: insertamos
                 $sql = 'INSERT INTO direcciones (usuario_id, calle, numero, piso, ciudad, referencia)
                         VALUES (:usuario_id, :calle, :numero, :piso, :ciudad, :referencia)';
             } else {
-                // ya tenía una: la actualizamos
                 $sql = 'UPDATE direcciones
                         SET calle = :calle, numero = :numero, piso = :piso,
                             ciudad = :ciudad, referencia = :referencia
